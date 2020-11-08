@@ -1,4 +1,4 @@
-package io.hackages.learning.model;
+package io.hackages.learning.domain.model;
 
 public class Flight {
 

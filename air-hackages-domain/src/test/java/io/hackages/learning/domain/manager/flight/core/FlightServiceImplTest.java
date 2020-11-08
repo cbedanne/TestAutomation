@@ -1,11 +1,13 @@
-package io.hackages.learning.manager.flight.core;
+package io.hackages.learning.domain.manager.flight.core;
 
-import io.hackages.learning.manager.flight.spi.FlightServiceProvider;
-import io.hackages.learning.model.Flight;
+import io.hackages.learning.domain.manager.flight.spi.FlightServiceProvider;
+import io.hackages.learning.domain.model.Flight;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
@@ -15,25 +17,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
 class FlightServiceImplTest {
 
     @Mock FlightServiceProvider flightProvider;
 
-    FlightServiceImpl flightService;
+    @InjectMocks FlightServiceImpl flightService;
 
     @BeforeEach
     void setUp() {
-        flightService = new FlightServiceImpl(flightProvider);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    void getFlight() {
+    void givenNoParameters_whenGetFlight_thenSucceed() {
         //given
         Flight flight = mock(Flight.class);
-        when(flightProvider.getFlight(null)).thenReturn(Arrays.asList(flight, flight));
+        when(flightProvider.getFlight()).thenReturn(Arrays.asList(flight, flight));
         //when
-        List<Flight> flights =  flightService.getFlights(null);
+        List<Flight> flights =  flightService.getFlights();
         //then
         assertThat(flights.size()).isEqualTo(2);
     }
