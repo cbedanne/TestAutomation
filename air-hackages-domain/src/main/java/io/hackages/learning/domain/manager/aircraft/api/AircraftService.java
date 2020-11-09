@@ -7,4 +7,13 @@ import java.util.List;
 public interface AircraftService {
 
     List<Aircraft> getAircrafts();
+
+    Aircraft addAircraft(String code, String description);
+
+    void deleteAircraft(String code);
+
+    Aircraft changeDescription(String description);
+
+    Aircraft getAircraftByCode(String code);
+
 }
