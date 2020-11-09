@@ -16,7 +16,7 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public List<Flight> getFlights() {
-        return provider.getFlight();
+        return provider.getFlights();
     }
 
     @Override

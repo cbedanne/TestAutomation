@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface FlightServiceProvider {
 
-    List<Flight> getFlight();
+    List<Flight> getFlights();
 
     List<Flight> getFlightByOrigin(String origin);
 

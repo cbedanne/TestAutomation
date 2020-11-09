@@ -19,7 +19,7 @@ public class FlightRepository implements FlightServiceProvider {
     }
 
     @Override
-    public List<Flight> getFlight() {
+    public List<Flight> getFlights() {
         return dailyFlights();
     }
 
