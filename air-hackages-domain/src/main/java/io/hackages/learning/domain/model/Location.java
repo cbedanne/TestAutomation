@@ -1,8 +1,8 @@
 package io.hackages.learning.domain.model;
 
 public enum Location {
-    CDG("Paris Charles De Gaule"),
-    AMS("Amsterdam Schipol");
+    CDG("Paris Charles De Gaulle"),
+    AMS("Amsterdam Schiphol");
 
     private final String airport;
 

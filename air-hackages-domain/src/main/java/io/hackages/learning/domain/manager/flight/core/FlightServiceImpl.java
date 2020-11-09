@@ -5,6 +5,8 @@ import io.hackages.learning.domain.manager.flight.spi.FlightServiceProvider;
 import io.hackages.learning.domain.model.Flight;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class FlightServiceImpl implements FlightService {
 
@@ -19,7 +21,17 @@ public class FlightServiceImpl implements FlightService {
         return provider.getFlights();
     }
 
+    public List<Flight> getFilteredFlights(Map<String, String> parameters) {
+        List<Flight> flights = provider.getFlights();
+        if (parameters != null && !parameters.isEmpty()) {
+            String  param = parameters.get("origin");
+            flights = flights.stream().filter(flight -> flight.getOrigin().equals(param)).collect(Collectors.toList());
+        }
+        return flights;
+    }
+
     @Override
+    @Deprecated
     public List<Flight> getFlightByOrigin(String origin) {
         return provider.getFlightByOrigin(origin);
     }
