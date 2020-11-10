@@ -12,10 +12,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -55,7 +52,7 @@ public class FlightServiceImplTest {
         //given
         Flight flight = mock(Flight.class);
         when(flight.getOrigin()).thenReturn("Amsterdam Schiphol");
-        when(flightProvider.getFlightByOrigin("Amsterdam Schiphol")).thenReturn(Arrays.asList(flight));
+        when(flightProvider.getFlightByOrigin("Amsterdam Schiphol")).thenReturn(Collections.singletonList(flight));
 
         //when
         List<Flight> originFlights = flightService.getFlightByOrigin("Amsterdam Schiphol");
@@ -70,7 +67,7 @@ public class FlightServiceImplTest {
         //given
         Flight flight = mock(Flight.class);
         when(flight.getDestination()).thenReturn("Paris Charles de Gaulle");
-        when(flightProvider.getFlightByDestination("Paris Charles de Gaulle")).thenReturn(Arrays.asList(flight));
+        when(flightProvider.getFlightByDestination("Paris Charles de Gaulle")).thenReturn(Collections.singletonList(flight));
 
         //when
         List<Flight> destinationFlights = flightService.getFlightByDestination("Paris Charles de Gaulle");

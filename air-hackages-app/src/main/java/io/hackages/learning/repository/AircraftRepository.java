@@ -21,15 +21,15 @@ public class AircraftRepository implements AircraftServiceProvider {
     class AircraftRowMapper implements RowMapper<Aircraft> {
         @Override
         public Aircraft mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Aircraft student = new Aircraft(rs.getString("code"), rs.getString("description"));
-            return student;
+            Aircraft aircraft = new Aircraft(rs.getString("code"), rs.getString("description"));
+            return aircraft;
         }
 
     }
 
     @Override
     public List<Aircraft> getAircrafts() {
-        return jdbcTemplate.query("select * from student", new AircraftRowMapper());
+        return jdbcTemplate.query("select * from AIRCRAFTS", new AircraftRowMapper());
     }
 
     @Override

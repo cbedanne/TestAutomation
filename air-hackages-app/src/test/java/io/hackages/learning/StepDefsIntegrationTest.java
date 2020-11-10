@@ -10,21 +10,18 @@ import static org.hamcrest.Matchers.is;
 
 public class StepDefsIntegrationTest extends SpringIntegrationTest {
 
+    private static final String server = "http://localhost:5000/";
+
     public StepDefsIntegrationTest(RestTemplateBuilder builder) {
         super(builder);
     }
 
-    @When("^the client calls /flights$")
-    public void the_client_issues_GET_flights() throws Throwable {
-        executeGet("http://localhost:5000/flights");
+    @When("the client calls /{word}")
+    public void the_client_issues_GET_request_root_path(String path) throws Throwable {
+        executeGet(server.concat(path));
     }
 
-    @When("^the client calls /aircrafts$")
-    public void the_client_issues_GET_aircrafts() throws Throwable {
-        executeGet("http://localhost:5000/aircrafts");
-    }
-
-    @Then("^the client receives status code of (\\d+)$")
+    @Then("the client receives status code of {int}")
     public void the_client_receives_status_code_of(int statusCode) throws Throwable {
         final HttpStatus currentStatusCode = latestResponse.getTheResponse().getStatusCode();
         assertThat("status code is incorrect : " + latestResponse.getBody(), currentStatusCode.value(), is(statusCode));

@@ -25,7 +25,7 @@ public class AircraftServiceImplTest {
     @InjectMocks AircraftServiceImpl aircraftService;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
@@ -75,7 +75,7 @@ public class AircraftServiceImplTest {
     }
 
     @Test
-    public void giveCode_whenGetAircraftByCode_thenWeSucceedToGetOneAircraft() throws Exception {
+    public void giveCode_whenGetAircraftByCode_thenWeSucceedToGetOneAircraft() {
         //When
         Aircraft aircraft = new Aircraft("AH007", "Airbus A360");
         Mockito.when(provider.fetchAircraftByCode("AH007")).thenReturn(aircraft);
@@ -88,7 +88,7 @@ public class AircraftServiceImplTest {
     }
 
     @Test
-    public void giveNull_whenAircraftByCode_then_fail() throws Exception {
+    public void giveNull_whenAircraftByCode_then_fail() {
         //When
         // This call will return a functional exception
         //Give
