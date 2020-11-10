@@ -5,8 +5,8 @@ import io.hackages.learning.domain.model.Aircraft;
 import io.hackages.learning.domain.model.Flight;
 import io.hackages.learning.domain.model.FlightType;
 import io.hackages.learning.domain.model.Location;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -18,22 +18,21 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
-class FlightServiceImplTest {
+public class FlightServiceImplTest {
 
     @Mock FlightServiceProvider flightProvider;
 
     @InjectMocks FlightServiceImpl flightService;
 
-    @BeforeEach
-    void setUp() {
+    @Before
+    public void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    void givenNoParameters_whenGetFlight_thenSucceed() {
+    public void givenNoParameters_whenGetFlight_thenSucceed() {
         //given
         Aircraft aircraft = new Aircraft("AH123", "Airbus A380");
         Flight flight = new Flight(
@@ -52,7 +51,7 @@ class FlightServiceImplTest {
     }
 
     @Test
-    void givenOrigin_whenGetOriginFlight_thenReturn1Flights() {
+    public void givenOrigin_whenGetOriginFlight_thenReturn1Flights() {
         //given
         Flight flight = mock(Flight.class);
         when(flight.getOrigin()).thenReturn("Amsterdam Schiphol");
@@ -67,7 +66,7 @@ class FlightServiceImplTest {
     }
 
     @Test
-    void givenDestination_whenGetDestination_thenReturn1Flights() {
+    public void givenDestination_whenGetDestination_thenReturn1Flights() {
         //given
         Flight flight = mock(Flight.class);
         when(flight.getDestination()).thenReturn("Paris Charles de Gaulle");
@@ -82,7 +81,7 @@ class FlightServiceImplTest {
     }
 
     @Test
-    void givenNull_whenGetFlightsByParameters_thenReturnAllTheFlights() {
+    public void givenNull_whenGetFlightsByParameters_thenReturnAllTheFlights() {
         //given
         Flight flight = mock(Flight.class);
         when(flight.getOrigin()).thenReturn("Paris Charles de Gaulle");
@@ -97,7 +96,7 @@ class FlightServiceImplTest {
     }
 
     @Test
-    void giveOriginFilterParameters_whenGetFilteredFlights_thenReturn1Flight() {
+    public void giveOriginFilterParameters_whenGetFilteredFlights_thenReturn1Flight() {
         //given
         Flight flight = mock(Flight.class);
         when(flight.getOrigin()).thenReturn("Paris Charles de Gaulle").thenReturn("Amsterdam Schiphol");
@@ -113,7 +112,7 @@ class FlightServiceImplTest {
     }
 
     @Test
-    void giveEmptyFilterParameters_whenGetFilteredFlights_thenSucceed() {
+    public void giveEmptyFilterParameters_whenGetFilteredFlights_thenSucceed() {
         //given
         Flight flight = mock(Flight.class);
         when(flight.getOrigin()).thenReturn("Paris Charles de Gaulle").thenReturn("Amsterdam Schiphol");

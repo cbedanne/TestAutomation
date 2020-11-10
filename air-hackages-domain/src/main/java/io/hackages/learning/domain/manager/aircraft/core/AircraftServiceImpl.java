@@ -47,6 +47,9 @@ public class AircraftServiceImpl implements AircraftService {
 
     @Override
     public Aircraft getAircraftByCode(String code) {
-        return provider.getAircraftByCode(code);
+        if (code == null) {
+            throw new FunctionalException("Incorrect Entry Data");
+        }
+        return provider.fetchAircraftByCode(code);
     }
 }

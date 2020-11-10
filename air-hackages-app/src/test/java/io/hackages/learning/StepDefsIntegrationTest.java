@@ -19,6 +19,11 @@ public class StepDefsIntegrationTest extends SpringIntegrationTest {
         executeGet("http://localhost:5000/flights");
     }
 
+    @When("^the client calls /aircrafts$")
+    public void the_client_issues_GET_aircrafts() throws Throwable {
+        executeGet("http://localhost:5000/aircrafts");
+    }
+
     @Then("^the client receives status code of (\\d+)$")
     public void the_client_receives_status_code_of(int statusCode) throws Throwable {
         final HttpStatus currentStatusCode = latestResponse.getTheResponse().getStatusCode();

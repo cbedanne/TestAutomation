@@ -26,7 +26,7 @@ public class AircraftServiceImplTest {
 
     @Before
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -51,7 +51,7 @@ public class AircraftServiceImplTest {
         //Give
         aircraftService.deleteAircraft("AH111");
         //Then
-        verify(provider).deleteAircraft("AH111");
+        verify(provider, times(1)).deleteAircraft("AH111");
     }
 
     @Test(expected = FunctionalException.class)
@@ -71,6 +71,32 @@ public class AircraftServiceImplTest {
             aircraftService.deleteAircraft("0011");
         } catch (TechnicalException ex) {
             assertThat(ex.getMessage()).isEqualTo("Connection error with the database");
+        }
+    }
+
+    @Test
+    public void giveCode_whenGetAircraftByCode_thenWeSucceedToGetOneAircraft() throws Exception {
+        //When
+        Aircraft aircraft = new Aircraft("AH007", "Airbus A360");
+        Mockito.when(provider.fetchAircraftByCode("AH007")).thenReturn(aircraft);
+
+        //Give
+        Aircraft result = aircraftService.getAircraftByCode("AH007");
+
+        // Then
+        assertThat(result).isEqualTo(aircraft);
+    }
+
+    @Test
+    public void giveNull_whenAircraftByCode_then_fail() throws Exception {
+        //When
+        // This call will return a functional exception
+        //Give
+        try {
+            Aircraft result = aircraftService.getAircraftByCode(null);
+            // Then
+        } catch (FunctionalException ex) {
+            assertThat(ex.getMessage()).isEqualTo("Incorrect Entry Data");
         }
     }
 

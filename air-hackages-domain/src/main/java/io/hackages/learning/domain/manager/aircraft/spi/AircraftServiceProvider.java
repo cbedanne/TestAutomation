@@ -15,5 +15,5 @@ public interface AircraftServiceProvider {
 
     Aircraft changeDescription(String description);
 
-    Aircraft getAircraftByCode(String code);
+    Aircraft fetchAircraftByCode(String code);
 }
