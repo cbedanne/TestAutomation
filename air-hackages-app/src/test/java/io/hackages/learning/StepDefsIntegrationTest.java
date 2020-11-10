@@ -1,9 +1,15 @@
 package io.hackages.learning;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.hackages.learning.domain.model.Flight;
+import org.hamcrest.core.StringContains;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
+
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -21,19 +27,49 @@ public class StepDefsIntegrationTest extends SpringIntegrationTest {
         executeGet(server.concat(path));
     }
 
+    @When("the client change the destination {word}")
+    public void the_client_change_the_destination(String destination) throws Throwable{
+        ObjectMapper objectMapper = new ObjectMapper();
+        final Flight flight = objectMapper.readValue(latestResponse.getBody(), new TypeReference<List<Flight>>(){}).get(0);
+        new Flight(
+                flight.getType(),
+                flight.getOrigin(),
+                destination,
+                flight.getDepartureDate(),
+                flight.getArrivalDate(),
+                flight.getAircraft()
+        );
+    }
+
+    @Then("the destination new destination is {word}")
+    public void the_destination_is_the_new_destination(String destination) throws Throwable {
+        ObjectMapper objectMapper = new ObjectMapper();
+        final List<Flight> flights = objectMapper.readValue(latestResponse.getBody(), new TypeReference<List<Flight>>(){});
+        final Flight flight = flights.get(0);
+        assertThat(flight.getDestination(), is(destination));
+    }
+
     @Then("the client receives status code of {int}")
     public void the_client_receives_status_code_of(int statusCode) throws Throwable {
         final HttpStatus currentStatusCode = latestResponse.getTheResponse().getStatusCode();
         assertThat("status code is incorrect : " + latestResponse.getBody(), currentStatusCode.value(), is(statusCode));
     }
 
+    @Then("the client take the first flight and the destination is {word}")
+    public void the_client_take_the_first_flight(String destination) throws Throwable{
+        ObjectMapper objectMapper = new ObjectMapper();
+        final List<Flight> flights = objectMapper.readValue(latestResponse.getBody(), new TypeReference<List<Flight>>(){});
+        Flight flight = flights.get(0);
+        assertThat(flight.getDestination(), StringContains.containsString(destination));
+    }
+
     @Then("the client take the first one")
-    public void the_client_take_the_first_one(){
+    public void the_client_take_the_first_one() throws Throwable{
         System.out.println("We are here");
     }
 
     @Then("the description of {word} is modify")
-    public void the_description_is_modify(){
+    public void the_description_is_modify(String code){
         System.out.println("We are there");
     }
 }
