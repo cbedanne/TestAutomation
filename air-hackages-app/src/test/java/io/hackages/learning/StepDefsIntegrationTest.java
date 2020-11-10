@@ -26,4 +26,14 @@ public class StepDefsIntegrationTest extends SpringIntegrationTest {
         final HttpStatus currentStatusCode = latestResponse.getTheResponse().getStatusCode();
         assertThat("status code is incorrect : " + latestResponse.getBody(), currentStatusCode.value(), is(statusCode));
     }
+
+    @Then("the client take the first one")
+    public void the_client_take_the_first_one(){
+        System.out.println("We are here");
+    }
+
+    @Then("the description of {word} is modify")
+    public void the_description_is_modify(){
+        System.out.println("We are there");
+    }
 }
