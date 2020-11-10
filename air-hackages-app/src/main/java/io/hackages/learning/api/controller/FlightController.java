@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,5 +32,15 @@ public class FlightController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     List<Flight> getFlights() {
         return getFlightService().getFlights();
+    }
+
+    @GetMapping(value = "/origin/{origin}", produces = MediaType.APPLICATION_JSON_VALUE)
+    List<Flight> getFirstFlightsByOrigin(@PathVariable String origin) {
+        return getFlightService().getFlightByOrigin(origin);
+    }
+
+    @GetMapping(value = "/destination/{destination}", produces = MediaType.APPLICATION_JSON_VALUE)
+    List<Flight> getFirstFlightsByDestination(@PathVariable String destination) {
+        return getFlightService().getFlightByDestination(destination);
     }
 }

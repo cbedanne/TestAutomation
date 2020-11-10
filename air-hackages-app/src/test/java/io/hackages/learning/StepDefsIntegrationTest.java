@@ -56,11 +56,19 @@ public class StepDefsIntegrationTest extends SpringIntegrationTest {
     }
 
     @Then("the client take the first flight and the destination is {word}")
-    public void the_client_take_the_first_flight(String destination) throws Throwable{
+    public void the_client_take_the_first_flight_and_find_destination(String destination) throws Throwable{
         ObjectMapper objectMapper = new ObjectMapper();
         final List<Flight> flights = objectMapper.readValue(latestResponse.getBody(), new TypeReference<List<Flight>>(){});
         Flight flight = flights.get(0);
         assertThat(flight.getDestination(), StringContains.containsString(destination));
+    }
+
+    @Then("the client take the first flight and the origin is {word}")
+    public void the_client_take_the_first_flight_and_find_origin(String origin) throws Throwable{
+        ObjectMapper objectMapper = new ObjectMapper();
+        final List<Flight> flights = objectMapper.readValue(latestResponse.getBody(), new TypeReference<List<Flight>>(){});
+        Flight flight = flights.get(0);
+        assertThat(flight.getOrigin(), StringContains.containsString(origin));
     }
 
     @Then("the client take the first one")
@@ -71,5 +79,12 @@ public class StepDefsIntegrationTest extends SpringIntegrationTest {
     @Then("the description of {word} is modify")
     public void the_description_is_modify(String code){
         System.out.println("We are there");
+    }
+
+    @Then("all the flights origin is {word}")
+    public void verify_if_all_flights_origin_is_the_good_one(String origin) throws Throwable{
+        ObjectMapper objectMapper = new ObjectMapper();
+        final List<Flight> flights = objectMapper.readValue(latestResponse.getBody(), new TypeReference<List<Flight>>(){});
+        flights.stream().forEach(flight -> assertThat(flight.getOrigin(), StringContains.containsString(origin)));
     }
 }

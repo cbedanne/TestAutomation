@@ -31,7 +31,6 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    @Deprecated
     public List<Flight> getFlightByOrigin(String origin) {
         return provider.getFlightByOrigin(origin);
     }
