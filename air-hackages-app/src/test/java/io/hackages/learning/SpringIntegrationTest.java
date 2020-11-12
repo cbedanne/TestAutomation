@@ -1,6 +1,9 @@
 package io.hackages.learning;
 
+import io.cucumber.java.Before;
 import io.cucumber.spring.CucumberContextConfiguration;
+import io.hackages.learning.repository.dao.AircraftDao;
+import io.hackages.learning.repository.model.AircraftEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -11,14 +14,18 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @CucumberContextConfiguration
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class SpringIntegrationTest {
-    static ResponseResults latestResponse = null;
+    public static ResponseResults latestResponse = null;
 
     private RestTemplate restTemplate;
+
+    @Autowired
+    AircraftDao aircraftDao;
 
     public SpringIntegrationTest(RestTemplateBuilder builder) {
         this.restTemplate = builder.build();
@@ -61,6 +68,10 @@ public class SpringIntegrationTest {
                 });
     }
 
+    void setupAircraftDatabase(List<AircraftEntity> aircrafts) {
+        aircraftDao.saveAll(aircrafts);
+    }
+
     private class ResponseResultErrorHandler implements ResponseErrorHandler {
         private ResponseResults results = null;
         private Boolean hadError = false;
@@ -80,4 +91,5 @@ public class SpringIntegrationTest {
             results = new ResponseResults(response);
         }
     }
+
 }

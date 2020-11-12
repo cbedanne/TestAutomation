@@ -2,13 +2,17 @@ package io.hackages.learning;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.cucumber.datatable.DataTable;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.hackages.learning.domain.model.Flight;
+import io.hackages.learning.repository.model.AircraftEntity;
 import org.hamcrest.core.StringContains;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -20,6 +24,15 @@ public class StepDefsIntegrationTest extends SpringIntegrationTest {
 
     public StepDefsIntegrationTest(RestTemplateBuilder builder) {
         super(builder);
+    }
+
+    @Given("We have the following aircrafts in the database")
+    public void setup_aircraft_table_in_the_database(DataTable table) throws Throwable {
+        List<AircraftEntity> aircraftEntities = new ArrayList<>();
+        table.cells().stream()
+                .map(fields -> new AircraftEntity(Long.parseLong(fields.get(0)), fields.get(1), fields.get(2)))
+                .forEach(aircraftEntities::add);
+        setupAircraftDatabase(aircraftEntities);
     }
 
     @When("the client calls /{word}")
@@ -87,4 +100,12 @@ public class StepDefsIntegrationTest extends SpringIntegrationTest {
         final List<Flight> flights = objectMapper.readValue(latestResponse.getBody(), new TypeReference<List<Flight>>(){});
         flights.stream().forEach(flight -> assertThat(flight.getOrigin(), StringContains.containsString(origin)));
     }
+
+    @Then("all the flights destination is {word}")
+    public void verify_if_all_flights_destination_is_the_good_one(String destination) throws Throwable{
+        ObjectMapper objectMapper = new ObjectMapper();
+        final List<Flight> flights = objectMapper.readValue(latestResponse.getBody(), new TypeReference<List<Flight>>(){});
+        flights.stream().forEach(flight -> assertThat(flight.getDestination(), StringContains.containsString(destination)));
+    }
+
 }

@@ -41,6 +41,15 @@ public class AircraftEntity {
         this.description = description;
     }
 
+    public AircraftEntity(Long id, String code, String description) {
+        this.id = id;
+        this.code = code;
+        this.description = description;
+    }
+
+    public AircraftEntity() {
+    }
+
     @Override
     public String toString() {
         return "Aircraft{" +

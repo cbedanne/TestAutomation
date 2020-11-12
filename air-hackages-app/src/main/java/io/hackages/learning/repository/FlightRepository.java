@@ -5,9 +5,13 @@ import io.hackages.learning.domain.model.Aircraft;
 import io.hackages.learning.domain.model.Flight;
 import io.hackages.learning.domain.model.FlightType;
 import io.hackages.learning.domain.model.Location;
+import io.hackages.learning.repository.dao.FlightDao;
+import io.hackages.learning.repository.model.FlightEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -15,17 +19,28 @@ import java.util.stream.IntStream;
 @Repository
 public class FlightRepository implements FlightServiceProvider {
 
+    @Autowired
+    FlightDao flightDao;
+
     public FlightRepository() {
     }
 
     @Override
     public List<Flight> getFlights() {
-        return dailyFlights();
+        List<Flight> flights = new ArrayList<>();
+        for(FlightEntity flightEntity: flightDao.findAll()) {
+            flights.add(this.flightEntityToFlight(flightEntity));
+        }
+        return flights;
     }
 
     @Override
     public List<Flight> getFlightByOrigin(String origin) {
-        return dailyFlights().stream().filter(flight -> flight.getOrigin().equals(origin)).collect(Collectors.toList());
+        List<Flight> flights = new ArrayList<>();
+        for(FlightEntity flightEntity: flightDao.findByOrigin(origin)) {
+            flights.add(this.flightEntityToFlight(flightEntity));
+        }
+        return flights;
     }
 
     @Override
@@ -54,5 +69,16 @@ public class FlightRepository implements FlightServiceProvider {
 
         ).collect(Collectors.toList());
         return flights;
+    }
+
+    private Flight flightEntityToFlight(FlightEntity flightEntity) {
+        return new Flight(
+                flightEntity.getType(),
+                flightEntity.getOrigin(),
+                flightEntity.getDestination(),
+                flightEntity.getDepartureDate(),
+                flightEntity.getArrivalDate(),
+                new Aircraft(flightEntity.getAircraft().getCode(), flightEntity.getAircraft().getDescription())
+        );
     }
 }

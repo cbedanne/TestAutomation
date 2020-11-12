@@ -24,7 +24,9 @@ public class AircraftRepository implements AircraftServiceProvider {
     @Override
     public List<Aircraft> getAircrafts() {
         List<Aircraft> aircrafts = new ArrayList<>();
-        aircraftDao.findAll().forEach(aircraftEntity -> aircrafts.add(new Aircraft(aircraftEntity.getCode(), aircraftEntity.getDescription())));
+        for(AircraftEntity ae  : aircraftDao.findAll()) {
+            aircrafts.add(this.aircraftEntityToAircraft(ae));
+        }
         return aircrafts;
     }
 
@@ -47,5 +49,9 @@ public class AircraftRepository implements AircraftServiceProvider {
     public Aircraft fetchAircraftByCode(String code) {
         AircraftEntity aircraft = aircraftDao.findByCode(code);
         return new Aircraft(aircraft.getCode(), aircraft.getDescription());
+    }
+
+    private Aircraft aircraftEntityToAircraft(AircraftEntity aircraftEntity) {
+        return new Aircraft(aircraftEntity.getCode(), aircraftEntity.getDescription());
     }
 }

@@ -13,5 +13,4 @@ public interface FlightService {
 
     List<Flight> getFlightByDestination(String destination);
 
-    List<Flight> getFilteredFlights(Map<String, String> parameters);
 }
