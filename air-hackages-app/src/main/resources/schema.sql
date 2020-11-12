@@ -17,5 +17,5 @@ CREATE TABLE FLIGHTS (
     departure_date TIMESTAMP,
     arrival_date TIMESTAMP,
     aircraft_id INT,
-    FOREIGN KEY (aircraft_id) REFERENCES aircrafts(id)
+    FOREIGN KEY (aircraft_id) REFERENCES aircrafts(id) ON DELETE CASCADE
 )

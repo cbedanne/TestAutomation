@@ -3,7 +3,6 @@ package io.hackages.learning;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.datatable.DataTable;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -11,6 +10,7 @@ import io.cucumber.java.en.When;
 import io.hackages.learning.domain.model.Aircraft;
 import io.hackages.learning.domain.model.Flight;
 import io.hackages.learning.repository.model.AircraftEntity;
+import io.hackages.learning.repository.model.FlightEntity;
 import org.hamcrest.core.StringContains;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
@@ -37,6 +37,18 @@ public class StepDefsIntegrationTest extends SpringIntegrationTest {
                 .map(fields -> new AircraftEntity(Long.parseLong(fields.get(0)), fields.get(1), fields.get(2)))
                 .forEach(aircraftEntities::add);
         setupAircraftDatabase(aircraftEntities);
+    }
+
+    @And("We have the following flights in the database")
+    public void setup_flight_table_in_the_database(DataTable table) throws Throwable {
+        List<FlightEntity> flightEntities = new ArrayList<>();
+        table.cells().stream()
+                .map(fields -> {
+                    AircraftEntity aircraftEntity = getAircraftById(Long.parseLong(fields.get(6)));
+                    return new FlightEntity(Long.parseLong(fields.get(0)), fields.get(1), fields.get(2), fields.get(3), fields.get(4), fields.get(5), aircraftEntity);
+                })
+                .forEach(flightEntities::add);
+        setupFlightDatabase(flightEntities);
     }
 
     @And("the number of aircrafts is {int}")

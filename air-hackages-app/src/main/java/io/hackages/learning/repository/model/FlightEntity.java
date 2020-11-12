@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class FlightEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String type;
@@ -20,7 +20,7 @@ public class FlightEntity {
 
     private String arrivalDate;
 
-    @OneToOne(targetEntity = AircraftEntity.class)
+    @OneToOne(targetEntity = AircraftEntity.class, cascade = CascadeType.ALL, orphanRemoval = true)
     private AircraftEntity aircraft;
 
     public Long getId() {
@@ -90,5 +90,18 @@ public class FlightEntity {
                 ", arrivalDate='" + arrivalDate + '\'' +
                 ", aircraft=" + aircraft +
                 '}';
+    }
+
+    public FlightEntity() {
+    }
+
+    public FlightEntity(Long id, String type, String origin, String destination, String departureDate, String arrivalDate, AircraftEntity aircraft) {
+        this.id = id;
+        this.type = type;
+        this.origin = origin;
+        this.destination = destination;
+        this.departureDate = departureDate;
+        this.arrivalDate = arrivalDate;
+        this.aircraft = aircraft;
     }
 }

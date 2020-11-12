@@ -1,9 +1,10 @@
 package io.hackages.learning;
 
-import io.cucumber.java.Before;
 import io.cucumber.spring.CucumberContextConfiguration;
 import io.hackages.learning.repository.dao.AircraftDao;
+import io.hackages.learning.repository.dao.FlightDao;
 import io.hackages.learning.repository.model.AircraftEntity;
+import io.hackages.learning.repository.model.FlightEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -26,6 +27,9 @@ public class SpringIntegrationTest {
 
     @Autowired
     AircraftDao aircraftDao;
+
+    @Autowired
+    FlightDao flightDao;
 
     public SpringIntegrationTest(RestTemplateBuilder builder) {
         this.restTemplate = builder.build();
@@ -68,8 +72,21 @@ public class SpringIntegrationTest {
                 });
     }
 
+    void cleanDatabase() {
+        flightDao.deleteAll();
+        aircraftDao.deleteAll();
+    }
+
     void setupAircraftDatabase(List<AircraftEntity> aircrafts) {
         aircraftDao.saveAll(aircrafts);
+    }
+
+    void setupFlightDatabase(List<FlightEntity> flightEntities) {
+        flightDao.saveAll(flightEntities);
+    }
+
+    AircraftEntity getAircraftById(Long id) {
+        return aircraftDao.findById(id).get();
     }
 
     private class ResponseResultErrorHandler implements ResponseErrorHandler {

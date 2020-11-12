@@ -2,7 +2,7 @@ Feature: Tests for /flights endpoint
 
   Scenario: client makes call to GET /flights
     Given We have the following flights in the database
-      |Medium-Haull|Paris|Amsterdam|2020-11-12 12:08:17.320053-03|2020-11-12 13:08:17.320053-03||
+      |1|Medium-Haull|Paris|Amsterdam|2020-11-12 12:08:17.320053-03|2020-11-12 13:08:17.320053-03|1|
     When the client calls /flights
     Then the client receives status code of 200
 
