@@ -35,7 +35,7 @@ public class AircraftServiceImplTest {
         Aircraft aircraft = mock(Aircraft.class);
         when(provider.getAircrafts()).thenReturn(Arrays.asList(aircraft, aircraft, aircraft));
         //When
-        List<Aircraft> aircrafts = provider.getAircrafts();
+        List<Aircraft> aircrafts = aircraftService.getAircrafts();
         //Then
         assertThat(aircrafts.size()).isEqualTo(3);
     }

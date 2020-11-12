@@ -3,9 +3,12 @@ package io.hackages.learning;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.hackages.learning.domain.model.Aircraft;
 import io.hackages.learning.domain.model.Flight;
 import io.hackages.learning.repository.model.AircraftEntity;
 import org.hamcrest.core.StringContains;
@@ -16,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 public class StepDefsIntegrationTest extends SpringIntegrationTest {
@@ -33,6 +37,13 @@ public class StepDefsIntegrationTest extends SpringIntegrationTest {
                 .map(fields -> new AircraftEntity(Long.parseLong(fields.get(0)), fields.get(1), fields.get(2)))
                 .forEach(aircraftEntities::add);
         setupAircraftDatabase(aircraftEntities);
+    }
+
+    @And("the number of aircrafts is {int}")
+    public void the_number_of_aircrafts_is_value(int value) throws Throwable {
+        ObjectMapper objectMapper = new ObjectMapper();
+        final List<Aircraft> aircrafts = objectMapper.readValue(latestResponse.getBody(), new TypeReference<List<Aircraft>>(){});
+        assertThat(aircrafts.size(), is(equalTo(4)));
     }
 
     @When("the client calls /{word}")

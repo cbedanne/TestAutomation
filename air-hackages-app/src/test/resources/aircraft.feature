@@ -6,6 +6,7 @@ Feature: Get all the aircrafts
       | 2 | AH102 | Airbus A380 |
     When the client calls /aircrafts
     Then the client receives status code of 200
+    And the number of aircrafts is 2
 
   Scenario: client makes call to GET /aircrafts
     When the client calls /aircrafts
