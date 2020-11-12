@@ -8,7 +8,7 @@ public interface AircraftService {
 
     List<Aircraft> getAircrafts();
 
-    Aircraft addAircraft(String code, String description);
+    Aircraft addAircraft(Aircraft aircraft);
 
     void deleteAircraft(String code);
 

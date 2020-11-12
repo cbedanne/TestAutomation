@@ -43,7 +43,7 @@ public class AircraftServiceImplTest {
     @Test(expected = FunctionalException.class)
     public void givenNullCode_whenAddAircraft_thenThrowFunctionException() {
         //When
-        aircraftService.addAircraft(null, "Best Thing to do");
+        aircraftService.addAircraft(new Aircraft(null,"Best Thing to do"));
     }
 
     @Test

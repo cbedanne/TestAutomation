@@ -1,6 +1,7 @@
 package io.hackages.learning;
 
 import io.cucumber.spring.CucumberContextConfiguration;
+import io.hackages.learning.domain.model.Aircraft;
 import io.hackages.learning.repository.dao.AircraftDao;
 import io.hackages.learning.repository.dao.FlightDao;
 import io.hackages.learning.repository.model.AircraftEntity;
@@ -22,6 +23,8 @@ import java.util.Map;
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class SpringIntegrationTest {
     public static ResponseResults latestResponse = null;
+
+    public static Object resultObject = null;
 
     private RestTemplate restTemplate;
 
@@ -51,7 +54,7 @@ public class SpringIntegrationTest {
         });
     }
 
-    void executePost() throws IOException {
+    void executePost(Object data) throws IOException {
         final Map<String, String> headers = new HashMap<>();
         headers.put("Accept", "application/json");
         final HeaderSettingRequestCallback requestCallback = new HeaderSettingRequestCallback(headers);
@@ -62,14 +65,8 @@ public class SpringIntegrationTest {
         }
 
         restTemplate.setErrorHandler(errorHandler);
-        latestResponse = restTemplate
-                .execute("http://localhost:5000/", HttpMethod.POST, requestCallback, response -> {
-                    if (errorHandler.hadError) {
-                        return (errorHandler.getResults());
-                    } else {
-                        return (new ResponseResults(response));
-                    }
-                });
+
+        resultObject = restTemplate.postForObject("http://localhost:5000/aircrafts", data, Object.class);
     }
 
     void cleanDatabase() {

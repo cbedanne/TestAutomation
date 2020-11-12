@@ -23,9 +23,9 @@ public class AircraftServiceImpl implements AircraftService {
     }
 
     @Override
-    public Aircraft addAircraft(String code, String description) {
-        if (code != null) {
-            return provider.addAircraft(code, description);
+    public Aircraft addAircraft(Aircraft aircraft) {
+        if (aircraft.getCode() != null) {
+            return provider.addAircraft(aircraft.getCode(), aircraft.getDescription());
         } else {
             throw new FunctionalException("Incorrect data");
         }

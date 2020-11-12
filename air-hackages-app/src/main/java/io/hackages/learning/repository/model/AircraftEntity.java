@@ -42,6 +42,11 @@ public class AircraftEntity {
         this.description = description;
     }
 
+    public AircraftEntity(String code, String description) {
+        this.code = code;
+        this.description = description;
+    }
+
     public AircraftEntity(Long id, String code, String description) {
         this.id = id;
         this.code = code;

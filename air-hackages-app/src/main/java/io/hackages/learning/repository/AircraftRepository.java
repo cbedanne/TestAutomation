@@ -32,7 +32,8 @@ public class AircraftRepository implements AircraftServiceProvider {
 
     @Override
     public Aircraft addAircraft(String code, String description) {
-        return null;
+        AircraftEntity aircraftEntity = aircraftDao.save(new AircraftEntity(code, description));
+        return new Aircraft(aircraftEntity.getCode(), aircraftEntity.getDescription());
     }
 
     @Override

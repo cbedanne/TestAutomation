@@ -12,6 +12,7 @@ import io.hackages.learning.domain.model.Flight;
 import io.hackages.learning.repository.model.AircraftEntity;
 import io.hackages.learning.repository.model.FlightEntity;
 import org.hamcrest.core.StringContains;
+import org.json.JSONObject;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 
@@ -56,7 +57,12 @@ public class StepDefsIntegrationTest extends SpringIntegrationTest {
     public void the_number_of_aircrafts_is_value(int value) throws Throwable {
         ObjectMapper objectMapper = new ObjectMapper();
         final List<Aircraft> aircrafts = objectMapper.readValue(latestResponse.getBody(), new TypeReference<List<Aircraft>>(){});
-        assertThat(aircrafts.size(), is(equalTo(2)));
+        assertThat(aircrafts.size(), is(equalTo(value)));
+    }
+
+    @When("the client calls POST /aircrafts with code {word} and description {word}")
+    public void the_client_add_one_aircraft(String code, String description) throws Throwable {
+        executePost(new Aircraft(code, description));
     }
 
     @When("the client calls /{word}")

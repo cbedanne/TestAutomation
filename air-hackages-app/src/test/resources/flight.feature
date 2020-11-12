@@ -97,3 +97,20 @@ Feature: Tests for /flights endpoint
       |6|Long-Haull|Brussels|New-York|2020-11-12 16:08:17.320053-03|2020-11-13 00:08:17.320053-03|AH102|
     When the client calls /flights/destination/Amsterdam
     Then all the flights destination is Amsterdam
+
+  Scenario: client makes call to GET /flights/destination/London
+    Given We have the following aircrafts in the database
+      |1| AH107 | Boeing 777 |
+      |2| AH102 | Airbus A380 |
+    And We have the following flights in the database
+      |1|Medium-Haull|Paris|Amsterdam|2020-11-12 12:08:17.320053-03|2020-11-12 13:08:17.320053-03|AH107|
+      |2|Medium-Haull|Amsterdam|Paris|2020-11-12 14:08:17.320053-03|2020-11-12 15:08:17.320053-03|AH107|
+      |3|Medium-Haull|Paris|Amsterdam|2020-11-12 16:08:17.320053-03|2020-11-12 17:08:17.320053-03|AH107|
+      |4|Medium-Haull|Amsterdam|Paris|2020-11-12 18:08:17.320053-03|2020-11-12 19:08:17.320053-03|AH107|
+      |5|Medium-Haull|Paris|Amsterdam|2020-11-12 20:08:17.320053-03|2020-11-12 21:08:17.320053-03|AH107|
+      |6|Long-Haull|Brussels|New-York|2020-11-12 16:08:17.320053-03|2020-11-13 00:08:17.320053-03|AH102|
+    When the client calls /flights/destination/London
+    Then there is no flight for this destination
+    Then the client add a destination to London
+    When the client calls /flights/destination/London
+    Then we have one flight
