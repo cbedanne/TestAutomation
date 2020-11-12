@@ -32,6 +32,7 @@ public class StepDefsIntegrationTest extends SpringIntegrationTest {
 
     @Given("We have the following aircrafts in the database")
     public void setup_aircraft_table_in_the_database(DataTable table) throws Throwable {
+        cleanDatabase();
         List<AircraftEntity> aircraftEntities = new ArrayList<>();
         table.cells().stream()
                 .map(fields -> new AircraftEntity(Long.parseLong(fields.get(0)), fields.get(1), fields.get(2)))
@@ -44,7 +45,7 @@ public class StepDefsIntegrationTest extends SpringIntegrationTest {
         List<FlightEntity> flightEntities = new ArrayList<>();
         table.cells().stream()
                 .map(fields -> {
-                    AircraftEntity aircraftEntity = getAircraftById(Long.parseLong(fields.get(6)));
+                    AircraftEntity aircraftEntity = getAircraftBycode(fields.get(6));
                     return new FlightEntity(Long.parseLong(fields.get(0)), fields.get(1), fields.get(2), fields.get(3), fields.get(4), fields.get(5), aircraftEntity);
                 })
                 .forEach(flightEntities::add);
@@ -55,7 +56,7 @@ public class StepDefsIntegrationTest extends SpringIntegrationTest {
     public void the_number_of_aircrafts_is_value(int value) throws Throwable {
         ObjectMapper objectMapper = new ObjectMapper();
         final List<Aircraft> aircrafts = objectMapper.readValue(latestResponse.getBody(), new TypeReference<List<Aircraft>>(){});
-        assertThat(aircrafts.size(), is(equalTo(4)));
+        assertThat(aircrafts.size(), is(equalTo(2)));
     }
 
     @When("the client calls /{word}")

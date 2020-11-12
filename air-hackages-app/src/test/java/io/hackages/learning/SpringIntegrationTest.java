@@ -89,6 +89,10 @@ public class SpringIntegrationTest {
         return aircraftDao.findById(id).get();
     }
 
+    AircraftEntity getAircraftBycode (String code) {
+        return aircraftDao.findByCode(code);
+    }
+
     private class ResponseResultErrorHandler implements ResponseErrorHandler {
         private ResponseResults results = null;
         private Boolean hadError = false;
